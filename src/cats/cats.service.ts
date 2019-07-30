@@ -1,5 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { Cat } from './cats.interface';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Cats } from '../model/cats.entity';
+import { Repository } from 'typeorm';
+
+
 
 /**
  * Provider 只不过是用Injectable注解的类
@@ -8,14 +13,21 @@ import { Cat } from './cats.interface';
 
 @Injectable()
 export class CatsService {
+
+  public constructor(
+    @InjectRepository(Cats)
+    private readonly catsRepository: Repository<Cats>
+  ) { }
+
+
   private readonly cats: Cat[] = [];
 
   public create(cat: Cat): void {
     this.cats.push(cat);
   }
 
-  public findAll(): Cat[] {
-    return [...this.cats];
+  public async findAll(): Promise<Cat[]> {
+    return await this.catsRepository.find();
   }
 
 }

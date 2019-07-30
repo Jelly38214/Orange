@@ -1,5 +1,5 @@
 import { CreateCatDto } from './create-dot.dot';
-import { Controller, Get, Req, Post, HttpCode, Header, Param, Body, Res, HttpStatus, UsePipes } from '@nestjs/common';
+import { Controller, Get, Req, Post, HttpCode, Header, Param, Body, Res, HttpStatus, UsePipes, UseInterceptors } from '@nestjs/common';
 import { Request, Response } from 'express';
 
 import { Cat } from './cats.interface';
@@ -7,11 +7,13 @@ import { CatsService } from './cats.service';
 import { ValidationPipe } from '../pipe/validation.pipe';
 
 import { Roles } from '../guard/roles.decorator';
+import { LoggingInterceptor } from '../interceptor/logging.interceptor';
 
 /**
  * 注意路由注册顺序
  */
 @Controller('cats')
+@UseInterceptors(LoggingInterceptor)
 export class CatsController {
 
   // 注入catsService
