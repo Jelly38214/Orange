@@ -1,5 +1,6 @@
 import { CreateCatDto } from './create-dot.dot';
-import { Controller, Get, Req, Post, HttpCode, Header, Param, Body, Res, HttpStatus, UsePipes, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Req, Post, HttpCode, Header, Param, Body, Res, HttpStatus, UsePipes, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { Request, Response } from 'express';
 
 import { ICat } from './cats.interface';
@@ -33,12 +34,16 @@ export class CatsController {
     await this.catsService.create(cat);
     res.status(HttpStatus.OK).json(cat);
   }
-  // public create(@Body() createCatDto: CreateCatDto, @Res() res: Response) {
-  //   res.status(HttpStatus.OK).end('This action create a cat');
-  // }
 
   @Get(':id')
   public findCat(@Param('id') id: number): string {
     return `This action return a #${id} cat`
   }
+
+  @Post('load')
+  @UseInterceptors(FileInterceptor('file'))
+  public uploadFile(@UploadedFile() file: any) {
+    console.log(file);
+  }
+
 }
