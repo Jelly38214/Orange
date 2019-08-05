@@ -74,6 +74,12 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
   Nest is [MIT licensed](LICENSE).
 
+## Point
+
+- 类，方法，参数装饰器
+- 返回响应数据：返回的对象/数组会被自动解析JSON。返回字符串，Nest不会解析它。默认情况下，响应的状态代码总是200; 另一种响应的方式就是常规的nodejs方式，通过参数装饰器获取res对象，然后做响应操作;
+- throw new HttpException('Forbidden', HttpStatus.FORBIDDEN)可以被Nest Exception filter捕获
+- 
 
 ## Question
 

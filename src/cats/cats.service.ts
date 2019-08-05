@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Cat } from './cats.interface';
+import { ICat } from './cats.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cats } from '../model/cats.entity';
 import { Repository } from 'typeorm';
@@ -19,14 +19,12 @@ export class CatsService {
     private readonly catsRepository: Repository<Cats>
   ) { }
 
-
-  private readonly cats: Cat[] = [];
-
-  public create(cat: Cat): void {
-    this.cats.push(cat);
+  public async create(cat: ICat): Promise<ICat> {
+    await this.catsRepository.save(cat);
+    return cat;
   }
 
-  public async findAll(): Promise<Cat[]> {
+  public async findAll(): Promise<ICat[]> {
     return await this.catsRepository.find();
   }
 

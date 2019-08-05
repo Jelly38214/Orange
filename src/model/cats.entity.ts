@@ -2,13 +2,13 @@ import { PrimaryGeneratedColumn, Column, Entity } from 'typeorm';
 
 @Entity()
 export class Cats {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ length: 45 })
   name: string;
 
-  @Column('int')
+  @Column('double')
   age: number;
 
   @Column({

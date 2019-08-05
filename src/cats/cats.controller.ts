@@ -2,7 +2,7 @@ import { CreateCatDto } from './create-dot.dot';
 import { Controller, Get, Req, Post, HttpCode, Header, Param, Body, Res, HttpStatus, UsePipes, UseInterceptors } from '@nestjs/common';
 import { Request, Response } from 'express';
 
-import { Cat } from './cats.interface';
+import { ICat } from './cats.interface';
 import { CatsService } from './cats.service';
 import { ValidationPipe } from '../pipe/validation.pipe';
 
@@ -22,16 +22,20 @@ export class CatsController {
   @Get()
   @HttpCode(200)
   @Header('Cache-Control', 'no-store')
-  public async findAll(@Req() request: Request): Promise<Cat[]> {
+  public async findAll(@Req() request: Request): Promise<ICat[]> {
     return this.catsService.findAll();
   }
 
-  @Post()
+  @Post('/create')
   @UsePipes(ValidationPipe)
-  @Roles('admin')
-  public create(@Body() createCatDto: CreateCatDto, @Res() res: Response) {
-    res.status(HttpStatus.OK).end('This action create a cat');
+  public async create(@Body() cat: ICat, @Res() res: Response) {
+    console.log(cat);
+    await this.catsService.create(cat);
+    res.status(HttpStatus.OK).json(cat);
   }
+  // public create(@Body() createCatDto: CreateCatDto, @Res() res: Response) {
+  //   res.status(HttpStatus.OK).end('This action create a cat');
+  // }
 
   @Get(':id')
   public findCat(@Param('id') id: number): string {
